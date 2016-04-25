@@ -4,15 +4,15 @@ const apps = [];
 const _ = require('lodash');
 const fs = require('fs');
 
-//name, nb download, note, mail adress dev
+const type = 'GROSSING';
 
 gplay.list({
-  collection: gplay.collection.GROSSING,
+  collection: gplay.collection[type],
   fullDetail: true,
   num: 120,
   lang: 'fr',
 }).then(candidateApps => {
-  const stream = fs.createWriteStream('GROSSING.csv');
+  const stream = fs.createWriteStream(`${type}.csv`);
   stream.write('title;downloads;note;mail;url;price\n');
   _.forEach(candidateApps, app => {
     const obj = {
@@ -28,7 +28,7 @@ gplay.list({
       if (s != '') s += ';';
       s += obj[key];
     });
-    stream.write(s + '\n');
+    stream.write(`${s}\n`);
   });
 }).catch(err => {
   console.error(err.stack);
